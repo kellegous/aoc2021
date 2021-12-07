@@ -126,19 +126,6 @@ func part1(iter IntIter) int {
 	return count
 }
 
-func ToArray(it IntIter) []int {
-	var vals []int
-	for {
-		v, ok := it.Next()
-		if !ok {
-			break
-		}
-		vals = append(vals, v)
-	}
-
-	return vals
-}
-
 func main() {
 	var src string
 	flag.StringVar(&src, "input", "input.txt", "the input file")
