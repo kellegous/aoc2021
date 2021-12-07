@@ -1,15 +1,24 @@
 use std::error::Error;
 use std::fs::File;
-use std::io::{BufRead, BufReader};
+use std::io::{BufRead, BufReader, Read};
 
-fn part1(nums: &[i32]) -> i32 {
-	nums.windows(2)
-		.fold(0, |c, p| if p[0] < p[1] { c + 1 } else { c })
+fn count_increases(nums: &[i32], n: usize) -> i32 {
+	let mut c = 0;
+	for i in n..nums.len() {
+		if nums[i - n] < nums[i] {
+			c += 1;
+		}
+	}
+	c
 }
 
-fn part2(nums: &[i32]) -> i32 {
-	let agg: Vec<i32> = nums.windows(3).map(|vals| vals.iter().sum()).collect();
-	part1(&agg)
+fn read_input<R: Read>(r: R) -> Result<Vec<i32>, Box<dyn Error>> {
+	let r = BufReader::new(r);
+	let mut vals = Vec::new();
+	for line in r.lines() {
+		vals.push(line?.parse::<i32>()?);
+	}
+	Ok(vals)
 }
 
 fn main() -> Result<(), Box<dyn Error>> {
@@ -21,12 +30,10 @@ fn main() -> Result<(), Box<dyn Error>> {
 		)
 		.get_matches();
 
-	let src = matches.value_of("input").unwrap_or("day1/input.txt");
-	let mut nums = Vec::new();
-	for line in BufReader::new(File::open(&src)?).lines() {
-		nums.push(line?.parse::<i32>()?);
-	}
-	println!("part1: {}", part1(&nums));
-	println!("part2: {}", part2(&nums));
+	let nums = read_input(File::open(
+		matches.value_of("input").unwrap_or("day1/input.txt"),
+	)?)?;
+	println!("part1: {}", count_increases(&nums, 1));
+	println!("part2: {}", count_increases(&nums, 3));
 	Ok(())
 }
