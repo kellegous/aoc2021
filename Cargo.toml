@@ -9,3 +9,7 @@ clap = "2.34.0"
 [[bin]]
 name = "day1"
 path = "src/day1/main.rs"
+
+[[bin]]
+name = "day2"
+path = "src/day2/main.rs"
