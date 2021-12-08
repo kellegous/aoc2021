@@ -31,7 +31,7 @@ fn main() -> Result<(), Box<dyn Error>> {
 		.get_matches();
 
 	let nums = read_input(File::open(
-		matches.value_of("input").unwrap_or("day1/input.txt"),
+		matches.value_of("input").unwrap_or("data/day1/input.txt"),
 	)?)?;
 	println!("part1: {}", count_increases(&nums, 1));
 	println!("part2: {}", count_increases(&nums, 3));

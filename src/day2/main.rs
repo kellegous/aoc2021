@@ -76,7 +76,7 @@ fn main() -> Result<(), Box<dyn Error>> {
 		.get_matches();
 
 	let commands = read_input(File::open(
-		matches.value_of("input").unwrap_or("day2/input.txt"),
+		matches.value_of("input").unwrap_or("data/day2/input.txt"),
 	)?)?;
 
 	println!(
