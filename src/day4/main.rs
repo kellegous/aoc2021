@@ -86,31 +86,6 @@ impl Card {
 	}
 }
 
-#[derive(Debug)]
-struct PlayError {
-	desc: String,
-}
-
-impl std::fmt::Display for PlayError {
-	fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-		writeln!(f, "{}", self.desc)
-	}
-}
-
-impl From<String> for PlayError {
-	fn from(s: String) -> PlayError {
-		PlayError { desc: s }
-	}
-}
-
-impl From<&str> for PlayError {
-	fn from(s: &str) -> PlayError {
-		PlayError { desc: s.to_owned() }
-	}
-}
-
-impl Error for PlayError {}
-
 struct Game<'a> {
 	draws: &'a [u8],
 	cards: Vec<CardState<'a>>,
@@ -129,7 +104,7 @@ impl<'a> Game<'a> {
 		}
 	}
 
-	fn play(&mut self) -> Result<Vec<usize>, PlayError> {
+	fn play(&mut self) -> Result<Vec<usize>, Box<dyn Error>> {
 		let mut idx: HashMap<u8, Vec<(usize, usize)>> = HashMap::new();
 		let mut has_won = HashSet::new();
 		let mut scores = Vec::new();
@@ -150,7 +125,7 @@ impl<'a> Game<'a> {
 				}
 			}
 		}
-		Err(PlayError::from("winners not found"))
+		Err("winners not found".into())
 	}
 }
 
