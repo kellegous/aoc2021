@@ -129,27 +129,10 @@ impl<'a> Game<'a> {
 		}
 	}
 
-	fn play(&mut self) -> Option<(u8, &CardState)> {
-		let mut idx: HashMap<u8, Vec<(usize, usize)>> = HashMap::new();
-		for (i, card) in self.cards.iter().enumerate() {
-			for (j, tile) in card.tiles().iter().enumerate() {
-				idx.entry(*tile).or_default().push((i, j));
-			}
-		}
-
-		for &draw in self.draws {
-			for (i, j) in idx.entry(draw).or_default().iter() {
-				if self.cards[*i].mark(*j) {
-					return Some((draw, &self.cards[*i]));
-				}
-			}
-		}
-		None
-	}
-
-	fn play_all(&mut self) -> Option<(u8, &CardState)> {
+	fn play(&mut self) -> Result<Vec<usize>, PlayError> {
 		let mut idx: HashMap<u8, Vec<(usize, usize)>> = HashMap::new();
 		let mut has_won = HashSet::new();
+		let mut scores = Vec::new();
 
 		for (i, card) in self.cards.iter().enumerate() {
 			for (j, tile) in card.tiles().iter().enumerate() {
@@ -159,15 +142,15 @@ impl<'a> Game<'a> {
 
 		for &draw in self.draws {
 			for (i, j) in idx.entry(draw).or_default().iter() {
-				if self.cards[*i].mark(*j) {
-					has_won.insert(*i);
+				if self.cards[*i].mark(*j) && has_won.insert(*i) {
+					scores.push(draw as usize * self.cards[*i].sum_unmarked());
 					if has_won.len() == self.cards.len() {
-						return Some((draw, &self.cards[*i]));
+						return Ok(scores);
 					}
 				}
 			}
 		}
-		None
+		Err(PlayError::from("winners not found"))
 	}
 }
 
@@ -213,22 +196,6 @@ impl<'a> CardState<'a> {
 	}
 }
 
-fn part1(input: &Input) -> Result<usize, Box<dyn Error>> {
-	let mut game = Game::from_input(input);
-	match game.play() {
-		Some((draw, card)) => Ok(draw as usize * card.sum_unmarked()),
-		None => Err(Box::new(PlayError::from("no winner found"))),
-	}
-}
-
-fn part2(input: &Input) -> Result<usize, Box<dyn Error>> {
-	let mut game = Game::from_input(input);
-	match game.play_all() {
-		Some((draw, card)) => Ok(draw as usize * card.sum_unmarked()),
-		None => Err(Box::new(PlayError::from("no winner found"))),
-	}
-}
-
 fn main() -> Result<(), Box<dyn Error>> {
 	let matches = clap::App::new("day4")
 		.arg(
@@ -242,7 +209,8 @@ fn main() -> Result<(), Box<dyn Error>> {
 		matches.value_of("input").unwrap_or("data/day4/input.txt"),
 	)?)?;
 
-	println!("Part 1: {}", part1(&input)?);
-	println!("Part 2: {}", part2(&input)?);
+	let scores = Game::from_input(&input).play()?;
+	println!("Part 1: {}", scores.first().unwrap());
+	println!("Part 2: {}", scores.last().unwrap());
 	Ok(())
 }
