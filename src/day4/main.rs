@@ -204,11 +204,11 @@ impl<'a> CardState<'a> {
 	}
 
 	fn sum_unmarked(&self) -> usize {
-		self.marks
+		self.tiles()
 			.iter()
-			.enumerate()
+			.zip(&self.marks)
 			.filter(|(_, &marked)| !marked)
-			.map(|(i, _)| self.card.tiles[i] as usize)
+			.map(|(&n, _)| n as usize)
 			.sum()
 	}
 }
