@@ -4,7 +4,7 @@ use std::str::FromStr;
 
 #[derive(Debug, Clone)]
 struct School {
-	// circular buffer with counts per population
+	// circular buffer with counts per generation
 	generations: [usize; 9],
 	// current time
 	t: usize,
