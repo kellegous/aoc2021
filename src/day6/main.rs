@@ -2,7 +2,7 @@ use std::error::Error;
 use std::fs::read_to_string;
 use std::str::FromStr;
 
-#[derive(Debug, Clone)]
+#[derive(Debug)]
 struct School {
 	// circular buffer with counts per generation
 	generations: [usize; 9],
