@@ -14,10 +14,6 @@ impl Pt {
 	fn new(x: isize, y: isize) -> Pt {
 		Pt { x, y }
 	}
-
-	fn equals(a: &Pt, b: &Pt) -> bool {
-		a.x == b.x && a.y == b.y
-	}
 }
 
 struct Pts {
@@ -45,7 +41,7 @@ impl Iterator for Pts {
 		} else {
 			let Pt { x: xa, y: ya } = self.fr;
 			let Pt { x: xb, y: yb } = self.to;
-			self.done = xa == xb && ya == yb;
+			self.done = &self.to == &self.fr;
 			self.fr = Pt {
 				x: xa + step(xa, xb),
 				y: ya + step(ya, yb),
