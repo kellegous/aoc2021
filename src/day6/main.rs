@@ -11,21 +11,12 @@ struct School {
 }
 
 impl School {
-	fn pop(&mut self) -> usize {
-		let n = self.generations[self.t % 9];
-		self.t += 1;
-		n
-	}
-
-	fn entry(&mut self, ix: usize) -> &mut usize {
-		let idx = (ix + self.t) % 9;
-		&mut self.generations[idx]
-	}
-
 	fn simulate_until(&mut self, t: usize) -> usize {
 		while self.t < t {
-			let n = self.pop();
-			*self.entry(6) += n;
+			let spawning_gen = self.t % 9;
+			let spawned_into_gen = (self.t + 7) % 9;
+			self.generations[spawned_into_gen] += self.generations[spawning_gen];
+			self.t += 1;
 		}
 		self.generations.iter().sum()
 	}
