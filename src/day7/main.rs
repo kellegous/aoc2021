@@ -11,15 +11,15 @@ where
 // very crappy gradient descent
 fn find_min<F>(positions: &[isize], dist: F) -> isize
 where
-	F: Copy + Fn(isize, isize) -> isize,
+	F: Fn(isize, isize) -> isize,
 {
 	let mut min = *positions.iter().min().unwrap();
 	let mut max = *positions.iter().max().unwrap();
 
 	while max - min >= 2 {
 		let mp = (min + max) / 2;
-		let ca = cost(positions, mp, dist);
-		let cb = cost(positions, mp + 1, dist);
+		let ca = cost(positions, mp, &dist);
+		let cb = cost(positions, mp + 1, &dist);
 		if ca > cb {
 			min = mp;
 		} else {
@@ -27,7 +27,7 @@ where
 		}
 	}
 
-	cost(&positions, min, dist).min(cost(&positions, max, dist))
+	cost(&positions, min, &dist).min(cost(&positions, max, &dist))
 }
 
 fn main() -> Result<(), Box<dyn Error>> {
