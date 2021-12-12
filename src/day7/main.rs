@@ -16,22 +16,18 @@ where
 	let mut min = *positions.iter().min().unwrap();
 	let mut max = *positions.iter().max().unwrap();
 
-	while max - min >= 2 {
+	while min < max {
 		let mp = (min + max) / 2;
 		let ca = total_cost(positions, mp, &cost);
 		let cb = total_cost(positions, mp + 1, &cost);
 		if ca > cb {
-			min = mp;
+			min = mp + 1
 		} else {
 			max = mp;
 		}
 	}
 
-	if min == max {
-		total_cost(&positions, min, &cost)
-	} else {
-		total_cost(&positions, min, &cost).min(total_cost(&positions, max, &cost))
-	}
+	total_cost(&positions, min, &cost)
 }
 
 fn main() -> Result<(), Box<dyn Error>> {
