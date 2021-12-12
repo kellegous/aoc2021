@@ -8,6 +8,7 @@ where
 	positions.iter().map(|&p| f(p, x)).sum::<isize>()
 }
 
+// the total cost is a convex function so this is a crappy gradient descent.
 fn find_min<F>(positions: &[isize], cost: F) -> isize
 where
 	F: Fn(isize, isize) -> isize,
