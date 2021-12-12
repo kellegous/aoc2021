@@ -1,15 +1,14 @@
 use std::error::Error;
 use std::fs::read_to_string;
 
-fn cost<F>(positions: &[isize], x: isize, f: F) -> isize
+fn total_cost<F>(positions: &[isize], x: isize, f: F) -> isize
 where
 	F: Fn(isize, isize) -> isize,
 {
 	positions.iter().map(|&p| f(p, x)).sum::<isize>()
 }
 
-// very crappy gradient descent
-fn find_min<F>(positions: &[isize], dist: F) -> isize
+fn find_min<F>(positions: &[isize], cost: F) -> isize
 where
 	F: Fn(isize, isize) -> isize,
 {
@@ -18,8 +17,8 @@ where
 
 	while max - min >= 2 {
 		let mp = (min + max) / 2;
-		let ca = cost(positions, mp, &dist);
-		let cb = cost(positions, mp + 1, &dist);
+		let ca = total_cost(positions, mp, &cost);
+		let cb = total_cost(positions, mp + 1, &cost);
 		if ca > cb {
 			min = mp;
 		} else {
@@ -27,7 +26,11 @@ where
 		}
 	}
 
-	cost(&positions, min, &dist).min(cost(&positions, max, &dist))
+	if min == max {
+		total_cost(&positions, min, &cost)
+	} else {
+		total_cost(&positions, min, &cost).min(total_cost(&positions, max, &cost))
+	}
 }
 
 fn main() -> Result<(), Box<dyn Error>> {
