@@ -148,10 +148,18 @@ impl std::fmt::Display for Entry {
 }
 
 impl Entry {
-	fn get_decoder(&self) -> Decoder {
-		let s1 = self.patterns.iter().find(|s| s.len() == 2).unwrap();
-		let s4 = self.patterns.iter().find(|s| s.len() == 4).unwrap();
-		Decoder { s1, s4 }
+	fn get_decoder(&self) -> Result<Decoder, Box<dyn Error>> {
+		let s1 = match self.patterns.iter().find(|s| s.len() == 2) {
+			Some(p) => p,
+			None => return Err("could not find pattern for 1".into()),
+		};
+
+		let s4 = match self.patterns.iter().find(|s| s.len() == 4) {
+			Some(p) => p,
+			None => return Err("could not find pattern for 4".into()),
+		};
+
+		Ok(Decoder { s1, s4 })
 	}
 }
 
@@ -219,16 +227,16 @@ fn part1(entries: &[Entry]) -> usize {
 		.sum::<usize>()
 }
 
-fn part2(entries: &[Entry]) -> usize {
+fn part2(entries: &[Entry]) -> Result<usize, Box<dyn Error>> {
 	entries
 		.iter()
 		.map(|e| {
-			let decoder = e.get_decoder();
-			e.output
+			let decoder = e.get_decoder()?;
+			Ok(e.output
 				.iter()
 				.enumerate()
 				.map(|(i, &p)| (10_usize).pow(3 - i as u32) * decoder.decode(p) as usize)
-				.sum::<usize>()
+				.sum::<usize>())
 		})
 		.sum()
 }
@@ -247,7 +255,7 @@ fn main() -> Result<(), Box<dyn Error>> {
 	)?)?;
 
 	println!("Part 1: {}", part1(&entries));
-	println!("Part 2: {}", part2(&entries));
+	println!("Part 2: {}", part2(&entries)?);
 
 	Ok(())
 }
