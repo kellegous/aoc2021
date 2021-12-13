@@ -22,7 +22,7 @@ fn read_input<R: Read>(r: R) -> Result<Vec<i32>, Box<dyn Error>> {
 }
 
 fn main() -> Result<(), Box<dyn Error>> {
-	let matches = clap::App::new("day1")
+	let matches = clap::App::new("day01")
 		.arg(
 			clap::Arg::with_name("input")
 				.takes_value(true)
@@ -31,7 +31,7 @@ fn main() -> Result<(), Box<dyn Error>> {
 		.get_matches();
 
 	let nums = read_input(File::open(
-		matches.value_of("input").unwrap_or("data/day1/input.txt"),
+		matches.value_of("input").unwrap_or("data/day01/input.txt"),
 	)?)?;
 	println!("part1: {}", count_increases(&nums, 1));
 	println!("part2: {}", count_increases(&nums, 3));

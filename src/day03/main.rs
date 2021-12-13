@@ -74,7 +74,7 @@ impl Report {
 }
 
 fn main() -> Result<(), Box<dyn Error>> {
-	let matches = clap::App::new("day3")
+	let matches = clap::App::new("day03")
 		.arg(
 			clap::Arg::with_name("input")
 				.takes_value(true)
@@ -83,7 +83,7 @@ fn main() -> Result<(), Box<dyn Error>> {
 		.get_matches();
 
 	let report = Report::from_reader(File::open(
-		matches.value_of("input").unwrap_or("data/day3/input.txt"),
+		matches.value_of("input").unwrap_or("data/day03/input.txt"),
 	)?)?;
 
 	println!("Part #1: {}", report.part1());

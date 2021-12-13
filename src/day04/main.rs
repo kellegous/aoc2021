@@ -172,7 +172,7 @@ impl<'a> CardState<'a> {
 }
 
 fn main() -> Result<(), Box<dyn Error>> {
-	let matches = clap::App::new("day4")
+	let matches = clap::App::new("day04")
 		.arg(
 			clap::Arg::with_name("input")
 				.takes_value(true)
@@ -181,7 +181,7 @@ fn main() -> Result<(), Box<dyn Error>> {
 		.get_matches();
 
 	let input = Input::from_reader(File::open(
-		matches.value_of("input").unwrap_or("data/day4/input.txt"),
+		matches.value_of("input").unwrap_or("data/day04/input.txt"),
 	)?)?;
 
 	let scores = Game::from_input(&input).play()?;

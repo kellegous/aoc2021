@@ -128,7 +128,7 @@ where
 }
 
 fn main() -> Result<(), Box<dyn Error>> {
-	let matches = clap::App::new("day5")
+	let matches = clap::App::new("day05")
 		.arg(
 			clap::Arg::with_name("input")
 				.takes_value(true)
@@ -137,7 +137,7 @@ fn main() -> Result<(), Box<dyn Error>> {
 		.get_matches();
 
 	let lines = lines_from_reader(File::open(
-		matches.value_of("input").unwrap_or("data/day5/input.txt"),
+		matches.value_of("input").unwrap_or("data/day05/input.txt"),
 	)?)?;
 
 	println!(

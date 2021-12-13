@@ -67,7 +67,7 @@ fn read_input<R: Read>(r: R) -> Result<Vec<Command>, Box<dyn Error>> {
 }
 
 fn main() -> Result<(), Box<dyn Error>> {
-	let matches = clap::App::new("day2")
+	let matches = clap::App::new("day02")
 		.arg(
 			clap::Arg::with_name("input")
 				.takes_value(true)
@@ -76,7 +76,7 @@ fn main() -> Result<(), Box<dyn Error>> {
 		.get_matches();
 
 	let commands = read_input(File::open(
-		matches.value_of("input").unwrap_or("data/day2/input.txt"),
+		matches.value_of("input").unwrap_or("data/day02/input.txt"),
 	)?)?;
 
 	println!(

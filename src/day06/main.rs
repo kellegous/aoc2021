@@ -34,7 +34,7 @@ impl FromStr for School {
 }
 
 fn main() -> Result<(), Box<dyn Error>> {
-	let matches = clap::App::new("day6")
+	let matches = clap::App::new("day06")
 		.arg(
 			clap::Arg::with_name("input")
 				.takes_value(true)
@@ -42,7 +42,7 @@ fn main() -> Result<(), Box<dyn Error>> {
 		)
 		.get_matches();
 
-	let mut school = read_to_string(matches.value_of("input").unwrap_or("data/day6/input.txt"))?
+	let mut school = read_to_string(matches.value_of("input").unwrap_or("data/day06/input.txt"))?
 		.parse::<School>()?;
 	println!("Part 1: {}", school.simulate_until(80));
 	println!("Part 2: {}", school.simulate_until(256));

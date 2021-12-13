@@ -31,7 +31,7 @@ where
 }
 
 fn main() -> Result<(), Box<dyn Error>> {
-	let matches = clap::App::new("day7")
+	let matches = clap::App::new("day07")
 		.arg(
 			clap::Arg::with_name("input")
 				.takes_value(true)
@@ -39,7 +39,7 @@ fn main() -> Result<(), Box<dyn Error>> {
 		)
 		.get_matches();
 
-	let positions = read_to_string(matches.value_of("input").unwrap_or("data/day7/input.txt"))?
+	let positions = read_to_string(matches.value_of("input").unwrap_or("data/day07/input.txt"))?
 		.split(",")
 		.map(|s| s.parse::<isize>())
 		.collect::<Result<Vec<_>, _>>()?;
