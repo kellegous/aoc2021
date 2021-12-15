@@ -187,10 +187,10 @@ fn main() -> Result<(), Box<dyn Error>> {
 			.sum::<usize>()
 	);
 
-	let mut basins = BinaryHeap::new();
-	for (pt, _) in low_points.iter() {
-		basins.push(map.find_basin_at(pt).len());
-	}
+	let mut basins = low_points
+		.iter()
+		.map(|(pt, _)| map.find_basin_at(pt).len())
+		.collect::<BinaryHeap<_>>();
 	println!(
 		"Part 2: {}",
 		DrainSorted::from(&mut basins).take(3).product::<usize>()
