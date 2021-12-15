@@ -147,19 +147,20 @@ impl Map {
 	}
 }
 
-struct DrainSorted<T: Ord> {
-	heap: BinaryHeap<T>,
+// DrainSorted is here because BinaryHeap::drain_sorted is experimental
+struct DrainSorted<'a, T: Ord> {
+	heap: &'a mut BinaryHeap<T>,
 }
 
-impl<T: Ord> Iterator for DrainSorted<T> {
+impl<'a, T: Ord> Iterator for DrainSorted<'a, T> {
 	type Item = T;
 	fn next(&mut self) -> Option<Self::Item> {
 		self.heap.pop()
 	}
 }
 
-impl<T: Ord> DrainSorted<T> {
-	fn from(heap: BinaryHeap<T>) -> DrainSorted<T> {
+impl<'a, T: Ord> DrainSorted<'a, T> {
+	fn from(heap: &'a mut BinaryHeap<T>) -> DrainSorted<'a, T> {
 		DrainSorted { heap }
 	}
 }
@@ -192,7 +193,7 @@ fn main() -> Result<(), Box<dyn Error>> {
 	}
 	println!(
 		"Part 2: {}",
-		DrainSorted::from(basins).take(3).product::<usize>()
+		DrainSorted::from(&mut basins).take(3).product::<usize>()
 	);
 	Ok(())
 }
