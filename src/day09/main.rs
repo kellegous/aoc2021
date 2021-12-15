@@ -147,20 +147,20 @@ impl Map {
 	}
 }
 
-struct Iter<T: Ord> {
+struct DrainSorted<T: Ord> {
 	heap: BinaryHeap<T>,
 }
 
-impl<T: Ord> Iterator for Iter<T> {
+impl<T: Ord> Iterator for DrainSorted<T> {
 	type Item = T;
 	fn next(&mut self) -> Option<Self::Item> {
 		self.heap.pop()
 	}
 }
 
-impl<T: Ord> Iter<T> {
-	fn of(heap: BinaryHeap<T>) -> Iter<T> {
-		Iter { heap }
+impl<T: Ord> DrainSorted<T> {
+	fn from(heap: BinaryHeap<T>) -> DrainSorted<T> {
+		DrainSorted { heap }
 	}
 }
 
@@ -190,6 +190,9 @@ fn main() -> Result<(), Box<dyn Error>> {
 	for (pt, _) in low_points.iter() {
 		basins.push(map.find_basin_at(pt).len());
 	}
-	println!("Part 2: {}", Iter::of(basins).take(3).product::<usize>());
+	println!(
+		"Part 2: {}",
+		DrainSorted::from(basins).take(3).product::<usize>()
+	);
 	Ok(())
 }
