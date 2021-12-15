@@ -138,11 +138,11 @@ impl Map {
 		flood::fill(pt, |x, y, g| {
 			let (w, h) = self.size();
 			let pt = (x as usize, y as usize);
-			if x < 0 || y < 0 || x >= w as isize || y >= h as isize || g.contains(&pt) {
-				false
-			} else {
-				self.get(&pt) < 9
-			}
+			x >= 0
+				&& y >= 0 && x < w as isize
+				&& y < h as isize
+				&& !g.contains(&pt)
+				&& self.get(&pt) < 9
 		})
 	}
 }
